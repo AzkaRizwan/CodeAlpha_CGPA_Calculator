@@ -110,18 +110,30 @@ void displaySemesterResult(const Semester &sem, int semesterNumber) {
     cout << left << setw(20) << "Course"
          << setw(10) << "Grade"
          << setw(15) << "Credit Hours"
-         << setw(15) << "Grade Points\n";
+         << setw(15) << "Grade Points" << '\n';
 
     for (const Course &c : sem.courses) {
-        cout << left << setw(20) << c.name
+
+        // Trim leading and trailing spaces from course name
+        string name = c.name;
+        size_t start = name.find_first_not_of(" \t");
+        size_t end   = name.find_last_not_of(" \t");
+
+        if (start != string::npos)
+            name = name.substr(start, end - start + 1);
+        else
+            name.clear();
+
+        cout << left << setw(20) << name
              << setw(10) << c.grade
              << setw(15) << c.creditHours
              << setw(15) << fixed << setprecision(2)
-             << c.gradePoint * c.creditHours << endl;
+             << (c.gradePoint * c.creditHours)
+             << '\n';
     }
 
-    cout << "\nTotal Credits: " << sem.totalCredits << endl;
-    cout << "Semester GPA: " << fixed << setprecision(2) << sem.gpa << endl;
+    cout << "\nTotal Credits: " << sem.totalCredits << '\n';
+    cout << "Semester GPA: " << fixed << setprecision(2) << sem.gpa << '\n';
 }
 
 /* ---------- Main Program ---------- */
